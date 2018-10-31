@@ -2,8 +2,11 @@
 
 /********************************** EJERCICIO esValido **********************************/
 bool esValido(toroide t){
-
-    return true;
+    int res = 0;
+    for (int i = 0; i < t.size(); i++) {
+        if (t[i].size() == t[0].size()) {res++;}
+    }
+    return res == t.size();
 }
 
 /****************************** EJERCICIO posicionesVivas *******************************/
@@ -14,7 +17,13 @@ vector<posicion> posicionesVivas(toroide t){
 
 /***************************** EJERCICIO densidadPoblacion ******************************/
 float densidadPoblacion(toroide t){
-    float densidad = 0.0;
+    float densidad = 0;
+    for(int i=0;i<t.size();i++){
+        for(int j=0;j<t[0].size();j++){
+            if(t[i][j]){densidad++;}
+        }
+    }
+    densidad /= t.size()*t[0].size();
     return densidad;
 }
 
