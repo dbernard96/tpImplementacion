@@ -11,8 +11,19 @@ bool esValido(toroide t){
 
 /****************************** EJERCICIO posicionesVivas *******************************/
 vector<posicion> posicionesVivas(toroide t){
-    vector<posicion> res;
-    return res;
+	vector<posicion> res;
+	posicion aux;
+
+	for (i = 0; i < t.size(); i++){
+		for (j = 0; j < t[0].size(); j++){
+			
+			aux<0> = i;
+			aux<1> = j;	
+			if (t[i][j]) res.push_back(aux);
+		}
+	}
+
+	return res;
 }
 
 /***************************** EJERCICIO densidadPoblacion ******************************/
