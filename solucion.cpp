@@ -30,7 +30,7 @@ vector<posicion> posicionesVivas(toroide t){
 float densidadPoblacion(toroide t){
     float densidad = 0;
     for(int i=0;i<t.size();i++){
-        for(int j=0;j<t[0].size();j++){
+        for(int j=0;j<t[0].size();j++){			//Acá puedes usar posicionesVivas
             if(t[i][j]){densidad++;}
         }
     }
