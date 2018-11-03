@@ -1,7 +1,8 @@
 #include "solucion.h"
 
-/******************* Funciones Auxiliares Generales *************************/
-i
+/************************ Funciones Auxiliares Generales *************************/
+
+bool viva(toroide t, posicion p);
 bool viva(toroide t, posicion p){				//Dado un toroide y una posición decide si esta está viva
 	return t[p<0>][p<1>];					//Incluida por comodida y limpieza del códigod
 }
@@ -59,12 +60,12 @@ int vecinosVivos(toroide t, posicion p){ 		 		//Cuenta la cantidad de vecinos vi
 			vecino<0> = (p<0> + i) % t.size(); 
 			vecino<1> = (p<1> + j) % t[0].size(); 
 
-			if (t[vecino<0>][vecino<1>]) contador++;	
+			if (viva(t,vecino)) contador++;	
 			
 		}
 	}
 
-	if (t[p<0>][p<1>]) contador--;					//La posición no es vecina de si misma
+	if (viva(t,p)) contador--;					//La posición no es vecina de si misma
 
 	return contador;
 }
