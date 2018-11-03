@@ -1,5 +1,10 @@
 #include "solucion.h"
 
+/******************* Funciones Auxiliares Generales *************************/
+i
+bool viva(toroide t, posicion p){				//Dado un toroide y una posición decide si esta está viva
+	return t[p<0>][p<1>];					//Incluida por comodida y limpieza del códigod
+}
 
 
 /********************************** EJERCICIO esValido **********************************/
