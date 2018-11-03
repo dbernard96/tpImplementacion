@@ -68,8 +68,35 @@ toroide evolucionMultiple(toroide t, int k){
 }
 
 /******************************** EJERCICIO esPeriodico *********************************/
+void pCiclo(vector<toroide> s, int& p){
+    for (int i = 0; i < s.size(); ++i) {
+        for (int j = i; j < s.size(); ++j) {
+            if(s[i] == s[j] && i!=j){
+                p = abs(j-i);
+            }
+        }
+    }
+    return;
+}
+
 bool esPeriodico(toroide t, int& p){
-    return false;
+    bool res = false;
+    if(!muerto(t)) {
+        vector<toroide> s = {t};
+        int i = 0;
+        while (!muerto(s[i]) && !hayRepetidosEntre(s, 0, s.size())) {
+            toroide aux = s[i];
+            evolucionToroide(aux);
+            s.push_back(aux);
+            i++;
+        }
+        pCiclo(s, p);
+        res = hayRepetidosEntre(s,0,s.size());
+    }else{
+        p = 1;
+        res = true;
+    }
+    return res;
 }
 
 /******************************* EJERCICIO primosLejanos ********************************/
@@ -121,3 +148,18 @@ bool viva(toroide t, posicion p){				//Dado un toroide y una posición decide si
 int mod(int n, int d){
      return abs(n) % d;
 }
+
+bool muerto(toroide t){
+    return posicionesVivas(t).size() == 0;
+}
+
+bool hayRepetidosEntre(vector<toroide> s, int a, int b){
+    while(a < b) {
+        for (int i = a; i < b; i++) {
+            if(s[a] == s[i] && a!=i){return true;}
+        }
+        a++;
+    }
+    return false;
+}
+
