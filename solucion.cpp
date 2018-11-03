@@ -68,35 +68,33 @@ toroide evolucionMultiple(toroide t, int k){
 }
 
 /******************************** EJERCICIO esPeriodico *********************************/
-void pCiclo(vector<toroide> s, int& p){
-    for (int i = 0; i < s.size(); ++i) {
-        for (int j = i; j < s.size(); ++j) {
-            if(s[i] == s[j] && i!=j){
-                p = abs(j-i);
+int sizeDelCiclo(vector<toroide> s){
+    int p = 0;
+    if(s.size() > 1) {
+        for (int i = 0; i < s.size(); ++i) {
+            for (int j = i + 1; j < s.size(); ++j) {
+                if (s[i] == s[j]) {
+                    p = abs(j - i);
+                }
             }
         }
+    }else{
+        p = 1;
     }
-    return;
+    return p;
 }
 
 bool esPeriodico(toroide t, int& p){
-    bool res = false;
-    if(!muerto(t)) {
-        vector<toroide> s = {t};
-        int i = 0;
-        while (!muerto(s[i]) && !hayRepetidosEntre(s, 0, s.size())) {
-            toroide aux = s[i];
-            evolucionToroide(aux);
-            s.push_back(aux);
-            i++;
-        }
-        pCiclo(s, p);
-        res = hayRepetidosEntre(s,0,s.size());
-    }else{
-        p = 1;
-        res = true;
+    vector<toroide> s = {t};
+    int i = 0;
+    while (!toroideMuerto(s[i]) && !hayRepetidosEntre(s, 0, s.size())) {
+        toroide aux = s[i];
+        evolucionToroide(aux);
+        s.push_back(aux);
+        i++;
     }
-    return res;
+    p = sizeDelCiclo(s);
+    return hayRepetidosEntre(s,0,s.size()) || toroideMuerto(t);
 }
 
 /******************************* EJERCICIO primosLejanos ********************************/
@@ -149,7 +147,7 @@ int mod(int n, int d){
      return abs(n) % d;
 }
 
-bool muerto(toroide t){
+bool toroideMuerto(toroide t){
     return posicionesVivas(t).size() == 0;
 }
 

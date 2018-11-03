@@ -21,6 +21,6 @@ bool soloBloques(toroide t);
 bool viva(toroide t, posicion p);
 int mod(int n, int d);
 int vecinosVivos(toroide t, posicion p);
-bool muerto(toroide t);
+bool toroideMuerto(toroide t);
 bool hayRepetidosEntre(vector<toroide> s, int a, int b);
 #endif //JUEGODELAVIDA_SOLUCION_H
