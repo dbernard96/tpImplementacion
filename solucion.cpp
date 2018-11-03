@@ -106,8 +106,15 @@ int seleccionNatural(vector<toroide> ts){
 
 /********************************** EJERCICIO fusionar **********************************/
 toroide fusionar(toroide t1, toroide t2){
-    toroide t;
-    return t;
+	toroide t;
+	
+	for (int i = 0; i < t.size(); i++){
+		for (int j = 0; j < t[0].size(); j++){
+			t[i][j] = t1[i][j] && t2[i][j];
+		}	
+	}
+
+	return t;
 }
 
 /****************************** EJERCICIO vistaTrasladada *******************************/
