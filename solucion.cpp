@@ -59,8 +59,8 @@ int vecinosVivos(toroide t, posicion p){ 		 		//Cuenta la cantidad de vecinos vi
 	for (int i = -1; i <= 1; i++){
 		for (int j = -1; i <= 1; j++){
 			
-			vecino<0> = (p<0> + i) % t.size(); 
-			vecino<1> = (p<1> + j) % t[0].size(); 
+			vecino<0> = mod( (p<0> + i), t.size() ) ; 
+			vecino<1> = mod( (p<1> + j), t[0].size() ); 
 
 			if (viva(t,vecino)) contador++;	
 			
@@ -72,16 +72,11 @@ int vecinosVivos(toroide t, posicion p){ 		 		//Cuenta la cantidad de vecinos vi
 	return contador;
 }
 
-//bool evolucionDePosicion(toroide t, posicion p){
-    
-//	if (t[p<0>][p<1>]) {  //Si la posición está viva
-		
-		
-//	} else {
-	
-//	}
+bool evolucionDePosicion(toroide t, posicion p){
 
-//}
+	return vecinosVivos(t,p) == 3 || vecinosVivos(t,p) == 2 && viva(t,p);
+
+}
 
 /****************************** EJERCICIO evolucionToroide ******************************/
 void evolucionToroide(toroide& t){
