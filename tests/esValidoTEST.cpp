@@ -12,13 +12,13 @@ using namespace std;
 
 TEST(esValidoTEST, toroideVacio){
     toroide t = { vector<bool> () };
-    EXPECT_TRUE(esValido(t));
+    EXPECT_FALSE(esValido(t));
 }
 
 TEST(esValidoTEST, toroideVacio5Filas){
     vector<bool> vacio;
     toroide t = { vacio, vacio, vacio, vacio, vacio };
-    EXPECT_TRUE(esValido(t));
+    EXPECT_FALSE(esValido(t));
 }
 
 TEST(esValidoTEST, distintasFilas){

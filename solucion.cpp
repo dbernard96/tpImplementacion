@@ -1,85 +1,64 @@
 #include "solucion.h"
 
-/************************ Funciones Auxiliares Generales *************************/
-
-bool viva(toroide t, posicion p);
-bool viva(toroide t, posicion p){				//Dado un toroide y una posición decide si esta está viva
-	return t[p<0>][p<1>];					//Incluida por comodida y limpieza del códigod
-}
-int mod(int n, int d);
-int mod(int n, int d){
-	return abs(n) % d;
-}
 /********************************** EJERCICIO esValido **********************************/
 bool esValido(toroide t){
     int res = 0;
     for (int i = 0; i < t.size(); i++) {
-        if (t[i].size() == t[0].size()) {res++;}
+        if (t[i].size() == t[0].size() && t[0].size() > 0) {res++;}
     }
-    return res == t.size();
+    return t.size() > 0 && res == t.size();
 }
 
 /****************************** EJERCICIO posicionesVivas *******************************/
 vector<posicion> posicionesVivas(toroide t){
 	vector<posicion> res;
-	posicion aux;
-
-	for (i = 0; i < t.size(); i++){
-		for (j = 0; j < t[0].size(); j++){
-		
-			aux<0> = i;
-			aux<1> = j;	
-			if (t[i][j]) res.push_back(aux);
+	for (int i = 0; i < t.size(); i++){
+		for (int j = 0; j < t[0].size(); j++){
+			if (t[i][j]) res.push_back({i,j});
 		}
 	}
-
 	return res;
 }
 
 /***************************** EJERCICIO densidadPoblacion ******************************/
 float densidadPoblacion(toroide t){
     float densidad = 0;
-    for(int i=0;i<t.size();i++){
-        for(int j=0;j<t[0].size();j++){			//Acá puedes usar posicionesVivas
-            if(t[i][j]){densidad++;}
-        }
-    }
+    densidad = posicionesVivas(t).size();
     densidad /= t.size()*t[0].size();
     return densidad;
 }
 
 /**************************** EJERCICIO evolucionDePosicion *****************************/
 
-int vecinosVivos(toroide t, posicion p);
-int vecinosVivos(toroide t, posicion p){ 		 		//Cuenta la cantidad de vecinos vivos. Basado en la especificación entregada
-
-	int contador = 0;
-	posicion vecino;						//Stand-in para el vecino a ser chequeado
-
-	for (int i = -1; i <= 1; i++){
-		for (int j = -1; i <= 1; j++){
-			
-			vecino<0> = mod( (p<0> + i), t.size() ) ; 
-			vecino<1> = mod( (p<1> + j), t[0].size() ); 
-
-			if (viva(t,vecino)) contador++;	
-			
-		}
-	}
-
-	if (viva(t,p)) contador--;					//La posición no es vecina de si misma
-
-	return contador;
+bool evolucionDePosicion(toroide t, posicion p){
+    int vecinos = vecinosVivos(t,p);
+	return vecinos == 3 || (vecinos == 2 && viva(t,p));
 }
 
-bool evolucionDePosicion(toroide t, posicion p){
-
-	return vecinosVivos(t,p) == 3 || vecinosVivos(t,p) == 2 && viva(t,p);
-
+int vecinosVivos(toroide t, posicion p){
+    int contador = 0;
+    posicion vecino;
+    for (int i = -1; i <= 1; i++){
+        for (int j = -1; j <= 1; j++){
+            get<0>(vecino) = mod( (get<0>(p) + i), t.size() ) ;
+            get<1>(vecino) = mod( (get<1>(p) + j), t[0].size() );
+            if (viva(t,vecino)) contador++;
+        }
+    }
+    if (viva(t,p)) contador--;
+    return contador;
 }
 
 /****************************** EJERCICIO evolucionToroide ******************************/
 void evolucionToroide(toroide& t){
+    toroide aux = t;
+    for(int i = 0; i < t.size(); i++){
+        for(int j = 0; j < t[0].size(); j++){
+            aux[i][j] = evolucionDePosicion(t,{i,j});
+        }
+    }
+    t = aux;
+    return;
 }
 
 /***************************** EJERCICIO evolucionMultiple ******************************/
@@ -133,4 +112,12 @@ bool enCrecimiento(toroide t){
 bool soloBloques(toroide t){
     bool res;
     return res;
+}
+/************************ Funciones Auxiliares Generales *************************/
+bool viva(toroide t, posicion p){				//Dado un toroide y una posición decide si esta está viva
+    return t[get<0>(p)][get<1>(p)];					//Incluida por comodida y limpieza del código
+}
+
+int mod(int n, int d){
+     return abs(n) % d;
 }

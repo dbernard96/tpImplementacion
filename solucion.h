@@ -18,4 +18,8 @@ void cercarCelulasVivas(toroide& t);
 bool enCrecimiento(toroide t);
 bool soloBloques(toroide t);
 
+bool viva(toroide t, posicion p);
+int mod(int n, int d);
+int vecinosVivos(toroide t, posicion p);
+
 #endif //JUEGODELAVIDA_SOLUCION_H
