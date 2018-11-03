@@ -1,5 +1,7 @@
 #include "solucion.h"
 
+
+
 /********************************** EJERCICIO esValido **********************************/
 bool esValido(toroide t){
     int res = 0;
@@ -16,7 +18,7 @@ vector<posicion> posicionesVivas(toroide t){
 
 	for (i = 0; i < t.size(); i++){
 		for (j = 0; j < t[0].size(); j++){
-			
+		
 			aux<0> = i;
 			aux<1> = j;	
 			if (t[i][j]) res.push_back(aux);
@@ -39,9 +41,39 @@ float densidadPoblacion(toroide t){
 }
 
 /**************************** EJERCICIO evolucionDePosicion *****************************/
-bool evolucionDePosicion(toroide t, posicion p){
-    return true;
+
+int vecinosVivos(toroide t, posicion p);
+int vecinosVivos(toroide t, posicion p){ 		 		//Cuenta la cantidad de vecinos vivos. Basado en la especificación entregada
+
+	int contador = 0;
+	posicion vecino;						//Stand-in para el vecino a ser chequeado
+
+	for (int i = -1; i <= 1; i++){
+		for (int j = -1; i <= 1; j++){
+			
+			vecino<0> = (p<0> + i) % t.size(); 
+			vecino<1> = (p<1> + j) % t[0].size(); 
+
+			if (t[vecino<0>][vecino<1>]) contador++;	
+			
+		}
+	}
+
+	if (t[p<0>][p<1>]) contador--;					//La posición no es vecina de si misma
+
+	return contador;
 }
+
+//bool evolucionDePosicion(toroide t, posicion p){
+    
+//	if (t[p<0>][p<1>]) {  //Si la posición está viva
+		
+		
+//	} else {
+	
+//	}
+
+//}
 
 /****************************** EJERCICIO evolucionToroide ******************************/
 void evolucionToroide(toroide& t){
