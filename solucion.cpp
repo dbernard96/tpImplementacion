@@ -7,7 +7,9 @@ bool viva(toroide t, posicion p){				//Dado un toroide y una posición decide si
 	return t[p<0>][p<1>];					//Incluida por comodida y limpieza del códigod
 }
 
-
+int mod(int n, int d){
+	return abs(n) % d;
+}
 /********************************** EJERCICIO esValido **********************************/
 bool esValido(toroide t){
     int res = 0;
