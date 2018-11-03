@@ -1,4 +1,5 @@
 #include "solucion.h"
+#include "iostream"
 
 /********************************** EJERCICIO esValido **********************************/
 bool esValido(toroide t){
@@ -94,7 +95,31 @@ bool primosLejanos(toroide t1, toroide t2) {
 
 /****************************** EJERCICIO seleccionNatural ******************************/
 int seleccionNatural(vector<toroide> ts){
-    int indice;
+    for (int i = 0; i < ts.size(); ++i) {
+        int c;
+        if(esPeriodico(ts[i],c)){
+            return i;
+        }
+    }
+
+    int indice = 0;
+    vector<vector<toroide>> crono;
+    int i = 0;
+    while(i < ts.size()){
+        vector<toroide> listaDeEv = {ts[i]};
+        int j = 0;
+        while(!toroideMuerto(listaDeEv[j])){
+            toroide aux = listaDeEv[j];
+            evolucionToroide(aux);
+            listaDeEv.push_back(aux);
+            j++;
+        }
+        crono.push_back(listaDeEv);
+        if(crono[i].size() > crono[indice].size()){
+            indice = i;
+        }
+        i++;
+    }
     return indice;
 }
 
