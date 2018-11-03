@@ -68,22 +68,6 @@ toroide evolucionMultiple(toroide t, int k){
 }
 
 /******************************** EJERCICIO esPeriodico *********************************/
-int sizeDelCiclo(vector<toroide> s){
-    int p = 0;
-    if(s.size() > 1) {
-        for (int i = 0; i < s.size(); ++i) {
-            for (int j = i + 1; j < s.size(); ++j) {
-                if (s[i] == s[j]) {
-                    p = abs(j - i);
-                }
-            }
-        }
-    }else{
-        p = 1;
-    }
-    return p;
-}
-
 bool esPeriodico(toroide t, int& p){
     vector<toroide> s = {t};
     int i = 0;
@@ -93,7 +77,13 @@ bool esPeriodico(toroide t, int& p){
         s.push_back(aux);
         i++;
     }
-    p = sizeDelCiclo(s);
+
+    if(toroideMuerto(t)){
+        p = 1;
+    }else if(s[0] == s[s.size()-1]){
+        p = s.size()-1;
+    }
+
     return hayRepetidosEntre(s,0,s.size()) || toroideMuerto(t);
 }
 
