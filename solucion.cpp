@@ -6,7 +6,7 @@ bool viva(toroide t, posicion p);
 bool viva(toroide t, posicion p){				//Dado un toroide y una posición decide si esta está viva
 	return t[p<0>][p<1>];					//Incluida por comodida y limpieza del códigod
 }
-
+int mod(int n, int d);
 int mod(int n, int d){
 	return abs(n) % d;
 }
