@@ -70,8 +70,13 @@ void evolucionToroide(toroide& t){
 
 /***************************** EJERCICIO evolucionMultiple ******************************/
 toroide evolucionMultiple(toroide t, int k){
-    toroide result;
-    return result;
+	toroide result = t;
+	
+	for (int i = 0; i < k; i++){
+		evolucionToroide(result);
+	}
+
+	return result;
 }
 
 /******************************** EJERCICIO esPeriodico *********************************/
