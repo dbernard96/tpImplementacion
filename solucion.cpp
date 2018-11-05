@@ -147,8 +147,41 @@ toroide fusionar(toroide t1, toroide t2){
 }
 
 /****************************** EJERCICIO vistaTrasladada *******************************/
+bool esTraslacion(toroide t1, toroide t2,int i, int j){
+    bool res = true;
+    for (int f = 0; f < t1.size(); ++f) {
+        for (int c = 0; c < t1[0].size(); ++c) {
+            if(t2[f][c] != t1[mod(f+i,t1.size())][mod(c+j,t1[0].size())]){ //cambiar por while
+                res = false;
+            }
+        }
+    }
+    return  res;
+}
+
 bool vistaTrasladada(toroide t1, toroide t2){
     bool res = false;
+    if(t1.size() == t2.size() && t1[0].size() == t2[0].size()){
+        if(posicionesVivas(t1).size() == posicionesVivas(t2).size()){
+            int i = 0;
+            int j = 0;
+            while(i<t1.size() && !res){
+
+                if(esTraslacion(t1,t2,i,j)){
+                    res = true;
+                }
+
+
+                if(j!=t1.size()-1){
+                    j++;
+                }else{
+                    j=0;
+                    i++;
+                }
+
+            }
+        }
+    }
     return res;
 }
 
