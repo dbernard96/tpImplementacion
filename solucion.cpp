@@ -147,18 +147,6 @@ toroide fusionar(toroide t1, toroide t2){
 }
 
 /****************************** EJERCICIO vistaTrasladada *******************************/
-bool esTraslacion(toroide t1, toroide t2,int i, int j){
-    bool res = true;
-    for (int f = 0; f < t1.size(); ++f) {
-        for (int c = 0; c < t1[0].size(); ++c) {
-            if(t2[f][c] != t1[mod(f+i,t1.size())][mod(c+j,t1[0].size())]){ //cambiar por while
-                res = false;
-            }
-        }
-    }
-    return  res;
-}
-
 bool vistaTrasladada(toroide t1, toroide t2){
     bool res = false;
     if(t1.size() == t2.size() && t1[0].size() == t2[0].size()){
@@ -184,6 +172,29 @@ bool vistaTrasladada(toroide t1, toroide t2){
     }
     return res;
 }
+
+bool esTraslacion(toroide t1, toroide t2,int i, int j){
+    bool res = true;
+    int f = 0;
+    int c = 0;
+
+    while(f < t1.size() && res){
+
+        if(t2[f][c] != t1[mod(f+i,t1.size())][mod(c+j,t1[0].size())]){
+            res = false;
+        }
+
+        if(c!=t1[0].size()-1){
+            c++;
+        }else{
+            c=0;
+            f++;
+        }
+    }
+
+    return  res;
+}
+
 
 /******************************* EJERCICIO enCrecimiento ********************************/
 bool enCrecimiento(toroide t){
