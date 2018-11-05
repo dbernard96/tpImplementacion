@@ -15,7 +15,10 @@ vector<posicion> posicionesVivas(toroide t){
 	vector<posicion> res;
 	for (int i = 0; i < t.size(); i++){
 		for (int j = 0; j < t[0].size(); j++){
-			if (t[i][j]) res.push_back({i,j});
+            posicion a;
+            get<0>(a) = i;
+            get<1>(a) = j;
+			if (t[i][j]) res.push_back(a);
 		}
 	}
 	return res;
@@ -55,7 +58,10 @@ void evolucionToroide(toroide& t){
     toroide aux = t;
     for(int i = 0; i < t.size(); i++){
         for(int j = 0; j < t[0].size(); j++){
-            aux[i][j] = evolucionDePosicion(t,{i,j});
+            posicion a;
+            get<0>(a)=i;
+            get<1>(a)=j;
+            aux[i][j] = evolucionDePosicion(t,a);
         }
     }
     t = aux;
@@ -95,30 +101,32 @@ bool primosLejanos(toroide t1, toroide t2) {
 
 /****************************** EJERCICIO seleccionNatural ******************************/
 int seleccionNatural(vector<toroide> ts){
+    int indice = -1;
     for (int i = 0; i < ts.size(); ++i) {
         int c;
-        if(esPeriodico(ts[i],c)){
-            return i;
-        }
-    }
-
-    int indice = 0;
-    vector<vector<toroide>> crono;
-    int i = 0;
-    while(i < ts.size()){
-        vector<toroide> listaDeEv = {ts[i]};
-        int j = 0;
-        while(!toroideMuerto(listaDeEv[j])){
-            toroide aux = listaDeEv[j];
-            evolucionToroide(aux);
-            listaDeEv.push_back(aux);
-            j++;
-        }
-        crono.push_back(listaDeEv);
-        if(crono[i].size() > crono[indice].size()){
+        if(esPeriodico(ts[i],c) && indice == -1){
             indice = i;
         }
-        i++;
+    }
+    if(indice==-1){
+        indice = 0;
+        vector<vector<toroide>> crono;
+        int i = 0;
+        while(i < ts.size()){
+            vector<toroide> listaDeEv = {ts[i]};
+            int j = 0;
+            while(!toroideMuerto(listaDeEv[j])){
+                toroide aux = listaDeEv[j];
+                evolucionToroide(aux);
+                listaDeEv.push_back(aux);
+                j++;
+            }
+            crono.push_back(listaDeEv);
+            if(crono[i].size() > crono[indice].size()){
+                indice = i;
+            }
+            i++;
+        }
     }
     return indice;
 }
@@ -127,10 +135,12 @@ int seleccionNatural(vector<toroide> ts){
 toroide fusionar(toroide t1, toroide t2){
 	toroide t;
 	
-	for (int i = 0; i < t.size(); i++){
-		for (int j = 0; j < t[0].size(); j++){
-			t[i][j] = t1[i][j] && t2[i][j];
-		}	
+	for (int i = 0; i < t1.size(); i++){
+        vector<bool> v;
+		for (int j = 0; j < t1[0].size(); j++){
+			v.push_back(t1[i][j] && t2[i][j]);
+		}
+        t.push_back(v);
 	}
 
 	return t;
@@ -159,7 +169,12 @@ bool viva(toroide t, posicion p){				//Dado un toroide y una posición decide si
 }
 
 int mod(int n, int d){
-     return abs(n) % d;
+    if(n < 0){
+        n += d;
+    }else {
+        n = n % d;
+    }
+    return n;
 }
 
 bool toroideMuerto(toroide t){
