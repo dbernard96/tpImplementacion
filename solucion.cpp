@@ -100,10 +100,34 @@ bool esPeriodico(toroide t, int& p){
 }
 
 /******************************* EJERCICIO primosLejanos ********************************/
-bool primosLejanos(toroide t1, toroide t2) {
-    return false;
+
+
+bool buscarSiPrimos(toroide t1, t2){
+	int p1 = 0
+	bool res = t1 == t2;
+
+	while (!res){
+		
+		if( esPeriodico(t1,p1) ){ 					//Esto considera los toroides que pueden entrar
+			for (int i = 0; i < p1 && !res; i++){			//en loops pero que no lo están actualmente
+				if (evolucionToroide(t1) == t2) res = true;
+			}
+			return false;
+
+		} else {
+			res = evolucionToroide(t1) == t2;
+		}
+
+	}
+	
+	return res;
 }
 
+bool primosLejanos(toroide t1, toroide t2) {
+
+	return buscarSiPrimos(t1,t2) || buscarSiPrimos(t2,t1);
+
+}	
 /****************************** EJERCICIO seleccionNatural ******************************/
 int seleccionNatural(vector<toroide> ts){
     int indice = -1;
