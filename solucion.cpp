@@ -84,9 +84,7 @@ bool esPeriodico(toroide t, int& p){
     vector<toroide> s = {t};
     int i = 0;
     while (!toroideMuerto(s[i]) && !hayRepetidosEntre(s, 0, s.size())) {
-        toroide aux = s[i];
-        evolucionToroide(aux);
-        s.push_back(aux);
+        s.push_back(evolucionT(s[i]));
         i++;
     }
 
@@ -102,25 +100,14 @@ bool esPeriodico(toroide t, int& p){
 /******************************* EJERCICIO primosLejanos ********************************/
 
 
-bool buscarSiPrimos(toroide t1, t2){
-	int p1 = 0
-	bool res = t1 == t2;
-
-	while (!res){
-		
-		if( esPeriodico(t1,p1) ){ 					//Esto considera los toroides que pueden entrar
-			for (int i = 0; i < p1 && !res; i++){			//en loops pero que no lo están actualmente
-				if (evolucionToroide(t1) == t2) res = true;
-			}
-			return false;
-
-		} else {
-			res = evolucionToroide(t1) == t2;
-		}
-
+bool buscarSiPrimos(toroide t1,toroide t2){
+	vector<toroide> s = {t1};
+	int i = 0;
+	while(!toroideMuerto(s[i]) && t2 != s[i] && !hayRepetidosEntre(s,0,s.size())){
+	    s.push_back(evolucionT(s[i]));
+	    i++;
 	}
-	
-	return res;
+	return t2 == s[i];
 }
 
 bool primosLejanos(toroide t1, toroide t2) {
@@ -264,3 +251,7 @@ bool hayRepetidosEntre(vector<toroide> s, int a, int b){
     return false;
 }
 
+toroide evolucionT(toroide t){
+    evolucionToroide(t);
+    return t;
+}
