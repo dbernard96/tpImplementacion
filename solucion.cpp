@@ -71,11 +71,9 @@ void evolucionToroide(toroide& t){
 /***************************** EJERCICIO evolucionMultiple ******************************/
 toroide evolucionMultiple(toroide t, int k){
 	toroide result = t;
-	
 	for (int i = 0; i < k; i++){
 		evolucionToroide(result);
 	}
-
 	return result;
 }
 
@@ -83,13 +81,11 @@ toroide evolucionMultiple(toroide t, int k){
 bool esPeriodico(toroide t, int& p){
     vector<toroide> s = listaDeEvoluciones(t);
     int i = 0;
-
     if(toroideMuerto(t)){
         p = 1;
     }else if(s[0] == s[s.size()-1]){
         p = s.size()-1;
     }
-
     return hayRepetidosEntre(s,0,s.size()) || toroideMuerto(t);
 }
 
@@ -148,35 +144,23 @@ toroide fusionar(toroide t1, toroide t2){
 
 /****************************** EJERCICIO vistaTrasladada *******************************/
 bool vistaTrasladada(toroide t1, toroide t2){
-    bool res = false;
-    if(t1.size() == t2.size() && t1[0].size() == t2[0].size()){
-        if(posicionesVivas(t1).size() == posicionesVivas(t2).size()){
-            int i = 0;
-            int j = 0;
-            while(i<t1.size() && !res){
-                if(esTraslacion(t1,t2,i,j)){
-                    res = true;
-                }
-                if(j!=t1.size()-1){
-                    j++;
-                }else{
-                    j=0;
-                    i++;
-                }
-            }
+    int i = 0;
+    int j = 0;
+    while(i<t1.size() && !esTraslacion(t1,t2,i,j)){
+        if(j!=t1.size()-1){
+            j++;
+        }else{
+            j=0;
+            i++;
         }
     }
-    return res;
+    return i<t1.size();
 }
 
 bool esTraslacion(toroide t1, toroide t2,int i, int j){
-    bool res = true;
     int f = 0;
     int c = 0;
-    while(f < t1.size() && res){
-        if(t2[f][c] != t1[mod(f+i,t1.size())][mod(c+j,t1[0].size())]){
-            res = false;
-        }
+    while(f < t1.size() && t2[f][c] == t1[mod(f+i,t1.size())][mod(c+j,t1[0].size())]){
         if(c!=t1[0].size()-1){
             c++;
         }else{
@@ -185,7 +169,7 @@ bool esTraslacion(toroide t1, toroide t2,int i, int j){
         }
     }
 
-    return  res;
+    return  f>=t1.size();
 }
 
 
