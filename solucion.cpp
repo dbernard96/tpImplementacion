@@ -181,7 +181,14 @@ bool enCrecimiento(toroide t){
 
 /******************************* EJERCICIO soloBloques (OPCIONAL) ***********************/
 bool soloBloques(toroide t){
-    bool res;
+    bool res = true;
+    for (int i = 0; i < t.size(); ++i) {
+        for (int j = 0; j < t[0].size(); ++j) {
+            if(viva(t,{i,j}) && vecinosVivos(t,{i,j}) != 3){
+                res=false;
+            }
+        }
+    }
     return res;
 }
 /************************ Funciones Auxiliares Generales *************************/
