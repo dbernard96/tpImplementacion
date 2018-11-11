@@ -5,7 +5,9 @@
 bool esValido(toroide t){
     int res = 0;
     for (int i = 0; i < t.size(); i++) {
-        if (t[i].size() == t[0].size() && t[0].size() > 0) {res++;}
+        if (t[i].size() == t[0].size() && t[0].size() > 0) {
+            res++;
+        }
     }
     return t.size() > 0 && res == t.size();
 }
@@ -18,7 +20,9 @@ vector<posicion> posicionesVivas(toroide t){
             posicion a;
             get<0>(a) = i;
             get<1>(a) = j;
-			if (t[i][j]) res.push_back(a);
+			if (viva(t,a)) {
+                res.push_back(a);
+            }
 		}
 	}
 	return res;
@@ -80,7 +84,6 @@ toroide evolucionMultiple(toroide t, int k){
 /******************************** EJERCICIO esPeriodico *********************************/
 bool esPeriodico(toroide t, int& p){
     vector<toroide> s = listaDeEvoluciones(t);
-    int i = 0;
     if(toroideMuerto(t)){
         p = 1;
     }else if(s[0] == s[s.size()-1]){
@@ -90,20 +93,19 @@ bool esPeriodico(toroide t, int& p){
 }
 
 /******************************* EJERCICIO primosLejanos ********************************/
-bool buscarSiPrimos(toroide t1,toroide t2){
-	vector<toroide> s = listaDeEvoluciones(t1);
-	int i = 0;
-	while(t2 != s[i] && i<s.size()){
-	    i++;
-	}
-	return i<s.size();
+bool primosLejanos(toroide t1, toroide t2) {
+	return buscarSiPrimos(t1,t2) || buscarSiPrimos(t2,t1);
 }
 
-bool primosLejanos(toroide t1, toroide t2) {
+bool buscarSiPrimos(toroide t1,toroide t2){
+    vector<toroide> s = listaDeEvoluciones(t1);
+    int i = 0;
+    while(t2 != s[i] && i<s.size()){
+        i++;
+    }
+    return i<s.size();
+}
 
-	return buscarSiPrimos(t1,t2) || buscarSiPrimos(t2,t1);
-
-}	
 /****************************** EJERCICIO seleccionNatural ******************************/
 int seleccionNatural(vector<toroide> ts){
     int indice = -1;
@@ -147,7 +149,7 @@ bool vistaTrasladada(toroide t1, toroide t2){
     int i = 0;
     int j = 0;
     while(i<t1.size() && !esTraslacion(t1,t2,i,j)){
-        if(j!=t1.size()-1){
+        if(j<t1.size()-1){
             j++;
         }else{
             j=0;
@@ -161,7 +163,7 @@ bool esTraslacion(toroide t1, toroide t2,int i, int j){
     int f = 0;
     int c = 0;
     while(f < t1.size() && t2[f][c] == t1[mod(f+i,t1.size())][mod(c+j,t1[0].size())]){
-        if(c!=t1[0].size()-1){
+        if(c<t1[0].size()-1){
             c++;
         }else{
             c=0;
@@ -211,8 +213,8 @@ bool toroideMuerto(toroide t){
 
 bool hayRepetidosEntre(vector<toroide> s, int a, int b){
     while(a < b) {
-        for (int i = a; i < b; i++) {
-            if(s[a] == s[i] && a!=i){return true;}
+        for (int i = a+1; i < b; i++) {
+            if(s[a] == s[i]){return true;}
         }
         a++;
     }
