@@ -25,4 +25,5 @@ bool toroideMuerto(toroide t);
 bool hayRepetidosEntre(vector<toroide> s, int a, int b);
 bool esTraslacion(toroide t1, toroide t2, int i, int j);
 toroide evolucionT(toroide t);
+vector<toroide> listaDeEvoluciones(toroide t);
 #endif //JUEGODELAVIDA_SOLUCION_H

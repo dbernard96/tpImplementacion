@@ -81,12 +81,8 @@ toroide evolucionMultiple(toroide t, int k){
 
 /******************************** EJERCICIO esPeriodico *********************************/
 bool esPeriodico(toroide t, int& p){
-    vector<toroide> s = {t};
+    vector<toroide> s = listaDeEvoluciones(t);
     int i = 0;
-    while (!toroideMuerto(s[i]) && !hayRepetidosEntre(s, 0, s.size())) {
-        s.push_back(evolucionT(s[i]));
-        i++;
-    }
 
     if(toroideMuerto(t)){
         p = 1;
@@ -98,16 +94,13 @@ bool esPeriodico(toroide t, int& p){
 }
 
 /******************************* EJERCICIO primosLejanos ********************************/
-
-
 bool buscarSiPrimos(toroide t1,toroide t2){
-	vector<toroide> s = {t1};
+	vector<toroide> s = listaDeEvoluciones(t1);
 	int i = 0;
-	while(!toroideMuerto(s[i]) && t2 != s[i] && !hayRepetidosEntre(s,0,s.size())){
-	    s.push_back(evolucionT(s[i]));
+	while(t2 != s[i] && i<s.size()){
 	    i++;
 	}
-	return t2 == s[i];
+	return i<s.size();
 }
 
 bool primosLejanos(toroide t1, toroide t2) {
@@ -118,26 +111,19 @@ bool primosLejanos(toroide t1, toroide t2) {
 /****************************** EJERCICIO seleccionNatural ******************************/
 int seleccionNatural(vector<toroide> ts){
     int indice = -1;
-    for (int i = 0; i < ts.size(); ++i) {
+    for (int i = 0; i < ts.size() && indice==-1; ++i) {
         int c;
-        if(esPeriodico(ts[i],c) && indice == -1){
+        if(esPeriodico(ts[i],c)){
             indice = i;
         }
     }
+
     if(indice==-1){
-        indice = 0;
+        indice++;
         vector<vector<toroide>> crono;
         int i = 0;
         while(i < ts.size()){
-            vector<toroide> listaDeEv = {ts[i]};
-            int j = 0;
-            while(!toroideMuerto(listaDeEv[j])){
-                toroide aux = listaDeEv[j];
-                evolucionToroide(aux);
-                listaDeEv.push_back(aux);
-                j++;
-            }
-            crono.push_back(listaDeEv);
+            crono.push_back(listaDeEvoluciones(ts[i]));
             if(crono[i].size() > crono[indice].size()){
                 indice = i;
             }
@@ -150,7 +136,6 @@ int seleccionNatural(vector<toroide> ts){
 /********************************** EJERCICIO fusionar **********************************/
 toroide fusionar(toroide t1, toroide t2){
 	toroide t;
-	
 	for (int i = 0; i < t1.size(); i++){
         vector<bool> v;
 		for (int j = 0; j < t1[0].size(); j++){
@@ -158,7 +143,6 @@ toroide fusionar(toroide t1, toroide t2){
 		}
         t.push_back(v);
 	}
-
 	return t;
 }
 
@@ -170,19 +154,15 @@ bool vistaTrasladada(toroide t1, toroide t2){
             int i = 0;
             int j = 0;
             while(i<t1.size() && !res){
-
                 if(esTraslacion(t1,t2,i,j)){
                     res = true;
                 }
-
-
                 if(j!=t1.size()-1){
                     j++;
                 }else{
                     j=0;
                     i++;
                 }
-
             }
         }
     }
@@ -193,13 +173,10 @@ bool esTraslacion(toroide t1, toroide t2,int i, int j){
     bool res = true;
     int f = 0;
     int c = 0;
-
     while(f < t1.size() && res){
-
         if(t2[f][c] != t1[mod(f+i,t1.size())][mod(c+j,t1[0].size())]){
             res = false;
         }
-
         if(c!=t1[0].size()-1){
             c++;
         }else{
@@ -254,4 +231,14 @@ bool hayRepetidosEntre(vector<toroide> s, int a, int b){
 toroide evolucionT(toroide t){
     evolucionToroide(t);
     return t;
+}
+
+vector<toroide> listaDeEvoluciones(toroide t){
+    vector<toroide> s = {t};
+    int i = 0;
+    while(!toroideMuerto(s[i]) && !hayRepetidosEntre(s,0,s.size())){
+        s.push_back(evolucionT(s[i]));
+        i++;
+    }
+    return s;
 }
