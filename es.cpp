@@ -1,27 +1,41 @@
 #include "es.h"
 #include "definiciones.h"
+#include "solucion.h"
+#include "iostream"
 using namespace std;
 /******************************** EJERCICIO cargarToroide *******************************/
 toroide cargarToroide(string nombreArchivo, bool &status){
 	toroide t;
 	ifstream fin;
 	fin.open(nombreArchivo);
-	int filas;
-	fin >> filas;
-	int columnas;
-	fin >> columnas;
-	for (int i = 0; i < filas; ++i) {
-		vector<bool> v;
+	if(!fin.fail()){
+		int filas;
+		int columnas;
 		int aux;
-		for (int j = 0; j < columnas; ++j) {
+		fin >> filas;
+		fin >> columnas;
+		vector<bool> v;
+		while(!fin.eof() && t.size() != columnas){
 			fin >> aux;
 			if(aux == 1){
 				v.push_back(true);
 			}else{
 				v.push_back(false);
 			}
+
+			if(v.size() == filas){
+				t.push_back(v);
+				v = {};
+			}
 		}
-		t.push_back(v);
+		fin >> aux;
+		if(posicionesVivas(t).size() == aux && esValido(t)){
+			status = true;
+		}else{
+			status = false;
+		}
+	}else{
+		status = false;
 	}
 	fin.close();
 	return t;
@@ -41,9 +55,11 @@ bool escribirToroide(string nombreArchivo, toroide &t){
 			}else{
 				fout << 0;
 			}
+			fout << " ";
 		}
 		fout << endl;
 	}
+	fout << posicionesVivas(t).size();
 	fout.close();
-	return res;
+	return !fout.fail();
 }

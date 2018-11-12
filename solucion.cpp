@@ -89,7 +89,7 @@ bool esPeriodico(toroide t, int& p){
     }else if(s[0] == s[s.size()-1]){
         p = s.size()-1;
     }
-    return hayRepetidosEntre(s,0,s.size()) || toroideMuerto(t);
+    return toroideMuerto(t) || s[0] == s[s.size()-1];
 }
 
 /******************************* EJERCICIO primosLejanos ********************************/
@@ -176,9 +176,101 @@ bool esTraslacion(toroide t1, toroide t2,int i, int j){
 
 
 /******************************* EJERCICIO enCrecimiento ********************************/
+
+int calculoArea(vector<posicion> p){
+	return (get<0>(p[1])+1 - get<0>(p[0])) * (get<1>(p[1])+1 - get<1>(p[0]));
+}
+
+void trasladarFilas(toroide &t){
+	toroide aux;
+	aux.push_back(t[t.size()-1]);
+	int i = 0;
+	while(i<t.size()-1){
+		aux.push_back(t[i]);
+		i++;
+	}
+}
+
+toroide trasponer(toroide t){
+	toroide res;
+	for (int i = 0; i < t[0].size(); i++) {
+		vector<bool> aux;
+		for (int j = 0; j < t.size(); j++) {
+			aux.push_back(t[j][i]);
+		}
+		res.push_back(aux);
+	}
+	return res;
+}
+
+void trasladarColumnas(toroide &t){
+	t = trasponer(t);
+	trasladarFilas(t);
+	t = trasponer(t);
+}
+
+bool filaMuerta(toroide t, int i){
+	int j = 0;
+	bool res = false;
+	while(j < t[0].size() && !res){
+		res = res || t[i][j];
+		j++;
+	}
+	return !res;
+}
+
+bool colMuerta(toroide t, int i){
+	int j = 0;
+	bool res = false;
+	while(j < t.size() && !res){
+		res = res || t[j][i];
+		j++;
+	}
+	return !res;
+}
+
+vector<posicion> areaMinima(toroide t){
+	posicion p1;get<0>(p1)=0;get<1>(p1)=0;
+	posicion p2;get<0>(p2)=t.size()-1;get<1>(p2)=t[0].size()-1;
+
+
+	while(filaMuerta(t,get<0>(p2))){
+		get<0>(p2)--;
+	}
+
+	while(colMuerta(t,get<1>(p2))){
+		get<1>(p2)--;
+	}
+
+	while(filaMuerta(t,get<0>(p1))){
+		get<0>(p1)++;
+	}
+
+	while(colMuerta(t,get<1>(p1))){
+		get<1>(p1)++;
+	}
+
+	return {p1,p2};
+}
+
+vector<posicion> areaTrasladada(toroide t){
+	vector<posicion> areaBase = areaMinima(t);
+	for (int i = 0; i < t.size(); ++i) {
+		for (int j = 0; j <= t[0].size(); ++j) {
+			trasladarColumnas(t);
+			vector<posicion> aux = areaMinima(t);
+			if(calculoArea(areaBase) > calculoArea(aux)){
+				areaBase = aux;
+			}
+		}
+		trasladarFilas(t);
+	}
+	return areaBase;
+}
+
 bool enCrecimiento(toroide t){
-    bool res;
-    return res;
+	toroide te = evolucionT(t);
+	return !toroideMuerto(t) && calculoArea(areaTrasladada(t)) < calculoArea(areaTrasladada(te));
 }
 
 /******************************* EJERCICIO soloBloques (OPCIONAL) ***********************/
@@ -186,7 +278,8 @@ bool soloBloques(toroide t){
     bool res = true;
     for (int i = 0; i < t.size(); ++i) {
         for (int j = 0; j < t[0].size(); ++j) {
-            if(viva(t,{i,j}) && vecinosVivos(t,{i,j}) != 3){
+			posicion p;get<0>(p)=i;get<1>(p)=j;
+            if(viva(t,p) && vecinosVivos(t,p) != 3){
                 res=false;
             }
         }
