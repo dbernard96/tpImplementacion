@@ -28,4 +28,12 @@ toroide evolucionT(toroide t);
 vector<toroide> listaDeEvoluciones(toroide t);
 bool buscarSiPrimos(toroide t1,toroide t2);
 toroide trasponer(toroide t);
+
+int areaTrasladada(toroide t);
+int areaMinima(toroide t);
+bool colMuerta(toroide t, int i);
+bool filaMuerta(toroide t, int i);
+void trasladarColumnas(toroide &t);
+void trasladarFilas(toroide &t);
+int calculoArea(vector<posicion> p);
 #endif //JUEGODELAVIDA_SOLUCION_H

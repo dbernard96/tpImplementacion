@@ -177,18 +177,46 @@ bool esTraslacion(toroide t1, toroide t2,int i, int j){
 
 /******************************* EJERCICIO enCrecimiento ********************************/
 
-void mostrar(toroide t){
-    for (int i = 0; i < t.size(); ++i) {
-        for (int j = 0; j < t[0].size(); ++j) {
-            cout << t[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
+bool enCrecimiento(toroide t){
+    toroide te = evolucionT(t);
+    return !toroideMuerto(t) && areaTrasladada(t) < areaTrasladada(te);
 }
 
-int calculoArea(vector<posicion> p){
-	return (get<0>(p[1])+1 - get<0>(p[0])) * (get<1>(p[1])+1 - get<1>(p[0]));
+int areaTrasladada(toroide t){
+    int areaBase = areaMinima(t);
+    for (int i = 0; i < t.size(); ++i) {
+        for (int j = 0; j <= t[0].size(); ++j) {
+            trasladarColumnas(t);
+            int aux = areaMinima(t);
+            if(areaBase > aux) areaBase = aux;
+        }
+        trasladarFilas(t);
+    }
+    return areaBase;
+}
+
+int areaMinima(toroide t){
+    posicion p1;get<0>(p1)=0;get<1>(p1)=0;
+    posicion p2;get<0>(p2)=t.size()-1;get<1>(p2)=t[0].size()-1;
+    while(filaMuerta(t,get<0>(p2))){
+        get<0>(p2)--;
+    }
+    while(colMuerta(t,get<1>(p2))){
+        get<1>(p2)--;
+    }
+    while(filaMuerta(t,get<0>(p1))){
+        get<0>(p1)++;
+    }
+    while(colMuerta(t,get<1>(p1))){
+        get<1>(p1)++;
+    }
+    return calculoArea({p1,p2});
+}
+
+void trasladarColumnas(toroide &t){
+    t = trasponer(t);
+    trasladarFilas(t);
+    t = trasponer(t);
 }
 
 void trasladarFilas(toroide &t){
@@ -202,87 +230,8 @@ void trasladarFilas(toroide &t){
 	t = aux;
 }
 
-toroide trasponer(toroide t){
-	toroide res;
-	for (int i = 0; i < t[0].size(); i++) {
-		vector<bool> aux;
-		for (int j = 0; j < t.size(); j++) {
-			aux.push_back(t[j][i]);
-		}
-		res.push_back(aux);
-	}
-	return res;
-}
-
-void trasladarColumnas(toroide &t){
-	t = trasponer(t);
-	trasladarFilas(t);
-	t = trasponer(t);
-}
-
-bool filaMuerta(toroide t, int i){
-	int j = 0;
-	bool res = false;
-	while(j < t[0].size() && !res){
-		res = res || t[i][j];
-		j++;
-	}
-	return !res;
-}
-
-bool colMuerta(toroide t, int i){
-	int j = 0;
-	bool res = false;
-	while(j < t.size() && !res){
-		res = res || t[j][i];
-		j++;
-	}
-	return !res;
-}
-
-vector<posicion> areaMinima(toroide t){
-	posicion p1;get<0>(p1)=0;get<1>(p1)=0;
-	posicion p2;get<0>(p2)=t.size()-1;get<1>(p2)=t[0].size()-1;
-
-
-	while(filaMuerta(t,get<0>(p2))){
-		get<0>(p2)--;
-	}
-
-	while(colMuerta(t,get<1>(p2))){
-		get<1>(p2)--;
-	}
-
-	while(filaMuerta(t,get<0>(p1))){
-		get<0>(p1)++;
-	}
-
-	while(colMuerta(t,get<1>(p1))){
-		get<1>(p1)++;
-	}
-
-	return {p1,p2};
-}
-
-vector<posicion> areaTrasladada(toroide t){
-	vector<posicion> areaBase = areaMinima(t);
-	for (int i = 0; i < t.size(); ++i) {
-		for (int j = 0; j <= t[0].size(); ++j) {
-			trasladarColumnas(t);
-			vector<posicion> aux = areaMinima(t);
-			if(calculoArea(areaBase) > calculoArea(aux)){
-				areaBase = aux;
-			}
-		}
-		trasladarFilas(t);
-	}
-	cout << get<0>(areaBase[0]) << " " <<  get<1>(areaBase[0]) << " " << get<0>(areaBase[1]) << " " << get<1>(areaBase[1]) << " " << calculoArea(areaBase);
-	return areaBase;
-}
-
-bool enCrecimiento(toroide t){
-	toroide te = evolucionT(t);
-	return !toroideMuerto(t) && calculoArea(areaTrasladada(t)) < calculoArea(areaTrasladada(te));
+int calculoArea(vector<posicion> p){
+    return (get<0>(p[1])+1 - get<0>(p[0])) * (get<1>(p[1])+1 - get<1>(p[0]));
 }
 
 /******************************* EJERCICIO soloBloques (OPCIONAL) ***********************/
@@ -339,4 +288,37 @@ vector<toroide> listaDeEvoluciones(toroide t){
         i++;
     }
     return s;
+}
+
+
+toroide trasponer(toroide t){
+    toroide res;
+    for (int i = 0; i < t[0].size(); i++) {
+        vector<bool> aux;
+        for (int j = 0; j < t.size(); j++) {
+            aux.push_back(t[j][i]);
+        }
+        res.push_back(aux);
+    }
+    return res;
+}
+
+bool filaMuerta(toroide t, int i){
+    int j = 0;
+    bool res = false;
+    while(j < t[0].size() && !res){
+        res = res || t[i][j];
+        j++;
+    }
+    return !res;
+}
+
+bool colMuerta(toroide t, int i){
+    int j = 0;
+    bool res = false;
+    while(j < t.size() && !res){
+        res = res || t[j][i];
+        j++;
+    }
+    return !res;
 }
