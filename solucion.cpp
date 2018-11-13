@@ -177,6 +177,16 @@ bool esTraslacion(toroide t1, toroide t2,int i, int j){
 
 /******************************* EJERCICIO enCrecimiento ********************************/
 
+void mostrar(toroide t){
+    for (int i = 0; i < t.size(); ++i) {
+        for (int j = 0; j < t[0].size(); ++j) {
+            cout << t[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
 int calculoArea(vector<posicion> p){
 	return (get<0>(p[1])+1 - get<0>(p[0])) * (get<1>(p[1])+1 - get<1>(p[0]));
 }
@@ -189,6 +199,7 @@ void trasladarFilas(toroide &t){
 		aux.push_back(t[i]);
 		i++;
 	}
+	t = aux;
 }
 
 toroide trasponer(toroide t){
@@ -265,6 +276,7 @@ vector<posicion> areaTrasladada(toroide t){
 		}
 		trasladarFilas(t);
 	}
+	cout << get<0>(areaBase[0]) << " " <<  get<1>(areaBase[0]) << " " << get<0>(areaBase[1]) << " " << get<1>(areaBase[1]) << " " << calculoArea(areaBase);
 	return areaBase;
 }
 
