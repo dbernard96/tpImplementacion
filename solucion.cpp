@@ -5,11 +5,11 @@
 bool esValido(toroide t){
     int res = 0;
     for (int i = 0; i < t.size(); i++) {
-        if (t[i].size() == t[0].size() && t[0].size() > 0) {
+        if (t[i].size() == t[0].size()) {
             res++;
         }
     }
-    return t.size() > 0 && res == t.size();
+    return t.size() > 0 && t[0].size() > 0 && res == t.size();
 }
 
 /****************************** EJERCICIO posicionesVivas *******************************/
@@ -178,8 +178,8 @@ bool esTraslacion(toroide t1, toroide t2,int i, int j){
 /******************************* EJERCICIO enCrecimiento ********************************/
 
 bool enCrecimiento(toroide t){
-    toroide te = evolucionT(t);
-    return !toroideMuerto(t) && areaTrasladada(t) < areaTrasladada(te);
+    toroide tEvolucion = evolucionT(t);
+    return !toroideMuerto(t) && areaTrasladada(t) < areaTrasladada(tEvolucion);
 }
 
 int areaTrasladada(toroide t){
@@ -253,11 +253,7 @@ bool viva(toroide t, posicion p){				//Dado un toroide y una posición decide si
 }
 
 int mod(int n, int d){
-    if(n < 0){
-        n += d;
-    }else {
-        n = n % d;
-    }
+        n = (n+d) % d;
     return n;
 }
 
@@ -266,13 +262,16 @@ bool toroideMuerto(toroide t){
 }
 
 bool hayRepetidosEntre(vector<toroide> s, int a, int b){
-    while(a < b) {
-        for (int i = a+1; i < b; i++) {
-            if(s[a] == s[i]){return true;}
+    int i = a+1;
+    while(a < b && s[a] != s[i]) {
+        if(i<b-1){
+            i++;
+        }else{
+            a++;
+            i = a + 1;
         }
-        a++;
     }
-    return false;
+    return a<b;
 }
 
 toroide evolucionT(toroide t){
