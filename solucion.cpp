@@ -17,12 +17,10 @@ vector<posicion> posicionesVivas(toroide t){
 	vector<posicion> res;
 	for (int i = 0; i < t.size(); i++){
 		for (int j = 0; j < t[0].size(); j++){
-            posicion a;
-            get<0>(a) = i;
-            get<1>(a) = j;
+			posicion a = maketuple(i,j);
 			if (viva(t,a)) {
-                res.push_back(a);
-            }
+                		res.push_back(a);
+            		}
 		}
 	}
 	return res;
@@ -97,10 +95,6 @@ bool esPeriodico(toroide t, int& p){
 
 /******************************* EJERCICIO primosLejanos ********************************/
 bool primosLejanos(toroide t1, toroide t2) {
-	return buscarSiPrimos(t1,t2) || buscarSiPrimos(t2,t1);
-}
-
-bool buscarSiPrimos(toroide t1,toroide t2){
     vector<toroide> s = listaDeEvoluciones(t1);
     int i = 0;
     while(t2 != s[i] && i<s.size()){
