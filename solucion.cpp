@@ -66,10 +66,9 @@ void evolucionToroide(toroide& t){
 	for(int i = 0; i < t.size(); i++){
         	for(int j = 0; j < t[0].size(); j++){
            		posicion a = make_tuple(i,j);
-            		aux[i][j] = evolucionDePosicion(t,a);
+            		t[i][j] = evolucionDePosicion(aux,a);
 	        }
 	}
-	t = aux;
 	return;
 }
 
