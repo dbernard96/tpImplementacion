@@ -44,32 +44,35 @@ bool evolucionDePosicion(toroide t, posicion p){
 }
 
 int vecinosVivos(toroide t, posicion p){
-    int contador = 0;
-    posicion vecino;
-    for (int i = -1; i <= 1; i++){
-        for (int j = -1; j <= 1; j++){
-            get<0>(vecino) = mod( (get<0>(p) + i), t.size() ) ;
-            get<1>(vecino) = mod( (get<1>(p) + j), t[0].size() );
-            if (viva(t,vecino)) contador++;
-        }
-    }
-    if (viva(t,p)) contador--;
-    return contador;
+	int contador = 0;
+	int p0 = get<0>(p);
+	int p1 = get<1>(p);
+//  posicion vecino;
+	for (int i = -1; i <= 1; i++){
+        	for (int j = -1; j <= 1; j++){
+//        	get<0>(vecino) = mod( (get<0>(p) + i), t.size() ) ;
+//        	get<1>(vecino) = mod( (get<1>(p) + j), t[0].size() );
+			posicion vecino = make_tuple( mod(p0+i, t.size()), mod(p1+j, t[0].size() ) );
+
+        		if (viva(t,vecino)) contador++;
+        	}
+	}
+	if (viva(t,p)) contador--;
+	return contador;
 }
 
 /****************************** EJERCICIO evolucionToroide ******************************/
 void evolucionToroide(toroide& t){
-    toroide aux = t;
-    for(int i = 0; i < t.size(); i++){
-        for(int j = 0; j < t[0].size(); j++){
-            posicion a;
-            get<0>(a)=i;
-            get<1>(a)=j;
-            aux[i][j] = evolucionDePosicion(t,a);
-        }
-    }
-    t = aux;
-    return;
+	toroide aux = t;
+	
+	for(int i = 0; i < t.size(); i++){
+        	for(int j = 0; j < t[0].size(); j++){
+           		posicion a = make_tuple(i,j);
+            		aux[i][j] = evolucionDePosicion(t,a);
+	        }
+	}
+	t = aux;
+	return;
 }
 
 /***************************** EJERCICIO evolucionMultiple ******************************/
@@ -196,20 +199,21 @@ int areaTrasladada(toroide t){
 }
 
 int areaMinima(toroide t){
-    posicion p1;get<0>(p1)=0;get<1>(p1)=0;
-    posicion p2;get<0>(p2)=t.size()-1;get<1>(p2)=t[0].size()-1;
-    while(filaMuerta(t,get<0>(p2))){
-        get<0>(p2)--;
-    }
-    while(colMuerta(t,get<1>(p2))){
-        get<1>(p2)--;
-    }
-    while(filaMuerta(t,get<0>(p1))){
-        get<0>(p1)++;
-    }
-    while(colMuerta(t,get<1>(p1))){
-        get<1>(p1)++;
-    }
+	posicion p1 = make_tuple(0,0);
+	posicion p2 = make_tuple(t.size()-1, t[0].size()-1);
+
+	while(filaMuerta(t,get<0>(p2))){
+		get<0>(p2)--;
+	}
+	while(colMuerta(t,get<1>(p2))){
+		get<1>(p2)--;
+	}
+	while(filaMuerta(t,get<0>(p1))){
+		get<0>(p1)++;
+	}
+	while(colMuerta(t,get<1>(p1))){
+		get<1>(p1)++;
+	}
     return calculoArea({p1,p2});
 }
 
@@ -239,7 +243,7 @@ bool soloBloques(toroide t){
     bool res = true;
     for (int i = 0; i < t.size(); ++i) {
         for (int j = 0; j < t[0].size(); ++j) {
-			posicion p;get<0>(p)=i;get<1>(p)=j;
+			posicion p = make_tuple(i,j);
             if(viva(t,p) && vecinosVivos(t,p) != 3){
                 res=false;
             }
