@@ -36,4 +36,5 @@ bool filaMuerta(toroide t, int i);
 void trasladarColumnas(toroide &t);
 void trasladarFilas(toroide &t);
 int calculoArea(vector<posicion> p);
+bool mismaDimension(toroide t1,toroide t2);
 #endif //JUEGODELAVIDA_SOLUCION_H

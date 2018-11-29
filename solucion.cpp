@@ -17,10 +17,10 @@ vector<posicion> posicionesVivas(toroide t){
 	vector<posicion> res;
 	for (int i = 0; i < t.size(); i++){
 		for (int j = 0; j < t[0].size(); j++){
-			posicion a = maketuple(i,j);
+			posicion a = make_tuple(i,j);
 			if (viva(t,a)) {
-                		res.push_back(a);
-            		}
+               		res.push_back(a);
+			}
 		}
 	}
 	return res;
@@ -45,15 +45,11 @@ int vecinosVivos(toroide t, posicion p){
 	int contador = 0;
 	int p0 = get<0>(p);
 	int p1 = get<1>(p);
-//  posicion vecino;
 	for (int i = -1; i <= 1; i++){
-        	for (int j = -1; j <= 1; j++){
-//        	get<0>(vecino) = mod( (get<0>(p) + i), t.size() ) ;
-//        	get<1>(vecino) = mod( (get<1>(p) + j), t[0].size() );
-			posicion vecino = make_tuple( mod(p0+i, t.size()), mod(p1+j, t[0].size() ) );
-
-        		if (viva(t,vecino)) contador++;
-        	}
+	    for (int j = -1; j <= 1; j++){
+			posicion vecino = make_tuple(mod(p0+i,t.size()), mod(p1+j,t[0].size()));
+			if (viva(t,vecino)) contador++;
+        }
 	}
 	if (viva(t,p)) contador--;
 	return contador;
@@ -62,12 +58,10 @@ int vecinosVivos(toroide t, posicion p){
 /****************************** EJERCICIO evolucionToroide ******************************/
 void evolucionToroide(toroide& t){
 	toroide aux = t;
-	
 	for(int i = 0; i < t.size(); i++){
-        	for(int j = 0; j < t[0].size(); j++){
-           		posicion a = make_tuple(i,j);
-            		t[i][j] = evolucionDePosicion(aux,a);
-	        }
+	    for(int j = 0; j < t[0].size(); j++){
+	        t[i][j] = evolucionDePosicion(aux, make_tuple(i,j));
+	    }
 	}
 	return;
 }
@@ -107,19 +101,20 @@ int seleccionNatural(vector<toroide> ts){
     int indice = -1;
     for (int i = 0; i < ts.size() && indice==-1; ++i) {
         int c;
-        if(esPeriodico(ts[i],c)){
+        if(esPeriodico(ts[i],c) && !toroideMuerto(ts[i])){
             indice = i;
         }
     }
 
     if(indice==-1){
         indice++;
-        vector<vector<toroide>> crono;
+        int longitudVida = 0;
         int i = 0;
         while(i < ts.size()){
-            crono.push_back(listaDeEvoluciones(ts[i]));
-            if(crono[i].size() > crono[indice].size()){
+            int longNueva = listaDeEvoluciones(ts[i]).size();
+            if(longNueva > longitudVida){
                 indice = i;
+                longitudVida = longNueva;
             }
             i++;
         }
@@ -144,15 +139,17 @@ toroide fusionar(toroide t1, toroide t2){
 bool vistaTrasladada(toroide t1, toroide t2){
     int i = 0;
     int j = 0;
-    while(i<t1.size() && !esTraslacion(t1,t2,i,j)){
-        if(j<t1.size()-1){
-            j++;
-        }else{
-            j=0;
-            i++;
+    if(mismaDimension(t1,t2)) {
+        while (i < t1.size() && !esTraslacion(t1, t2, i, j)) {
+            if (j < t1.size() - 1) {
+                j++;
+            } else {
+                j = 0;
+                i++;
+            }
         }
     }
-    return i<t1.size();
+    return mismaDimension(t1,t2) && i<t1.size();
 }
 
 bool esTraslacion(toroide t1, toroide t2,int i, int j){
@@ -260,7 +257,7 @@ bool toroideMuerto(toroide t){
 
 bool hayRepetidosEntre(vector<toroide> s, int a, int b){
     int i = a+1;
-    while(a < b && s[a] != s[i]) {
+    while(a < b-1 && s[a] != s[i]) {
         if(i<b-1){
             i++;
         }else{
@@ -268,7 +265,7 @@ bool hayRepetidosEntre(vector<toroide> s, int a, int b){
             i = a + 1;
         }
     }
-    return a<b;
+    return a < b-1 && s.size() > 1;
 }
 
 toroide evolucionT(toroide t){
@@ -317,4 +314,8 @@ bool colMuerta(toroide t, int i){
         j++;
     }
     return !res;
+}
+
+bool mismaDimension(toroide t1,toroide t2){
+    return t1.size() == t2.size() && t1[0].size() == t2[0].size();
 }
