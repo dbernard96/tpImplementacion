@@ -15,7 +15,7 @@ toroide cargarToroide(string nombreArchivo, bool &status){
 		fin >> filas;
 		fin >> columnas;
 		vector<bool> v;
-		while(!fin.eof() && t.size() != columnas){
+		while(!fin.eof() && t.size() != filas){
 			fin >> aux;
 			if(aux == 1){
 				v.push_back(true);
@@ -23,13 +23,13 @@ toroide cargarToroide(string nombreArchivo, bool &status){
 				v.push_back(false);
 			}
 
-			if(v.size() == filas){
+			if(v.size() == columnas){
 				t.push_back(v);
 				v = {};
 			}
 		}
 		fin >> aux;
-		if(posicionesVivas(t).size() == aux && esValido(t)){
+		if(posicionesVivas(t).size() == aux && esValido(t) && fin.eof()){
 			status = true;
 		}else{
 			status = false;
