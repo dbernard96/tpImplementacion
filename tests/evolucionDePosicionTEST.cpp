@@ -64,3 +64,52 @@ TEST(evolucionDePosicionTEST, NoRevivePorDosVecinosVivos){
     toroide t = { {false, true, false}, {false, false, false}, {false, true, false}};
     EXPECT_FALSE(evolucionDePosicion(t, make_tuple(1,0)));
 }
+
+TEST(evolucionDePosicionTEST, unaFilaunaColumna) {
+    toroide t = {{true}};
+    EXPECT_FALSE(evolucionDePosicion(t, make_tuple(0, 0)));
+}
+
+TEST(evolucionDePosicionTEST, TodoVivo) {
+    toroide t = {{true, true, true},
+                 {true, true, true},
+                 {true, true, true},
+                 {true, true, true}};
+    EXPECT_FALSE(evolucionDePosicion(t, make_tuple(1,0)));
+}
+
+TEST(evolucionDePosicionTEST, VivoRodeadoDeMuertos) {
+    toroide t = {{true, false, false, false, true},
+                 {true, false, true, false, true},
+                 {true, false, false, false, true},
+                 {true, true, true, true, true}};
+    EXPECT_FALSE(evolucionDePosicion(t, make_tuple(1,2)));
+}
+
+TEST(evolucinDePosicionTEST, SeQuedaMuerto){
+    toroide t = {{true, false, true, true, false},
+                 {false, false, false, true, false},
+                 {false, false, false, false, true},
+                 {true, false, false, true, true}};
+    EXPECT_FALSE(evolucionDePosicion(t, make_tuple(1,1)));
+}
+
+TEST(evolucinDePosicionTEST, MuertoSobrepoblado){
+    toroide t = {{true, false, true, false, true, false},
+                 {false, false, true, false, true, false},
+                 {false, true, false, false, false, true},
+                 {true, false, false, true, false, true},
+                 {true, false, false, true, false, true}};
+    EXPECT_FALSE(evolucionDePosicion(t, make_tuple(1,1)));
+}
+
+TEST(evolucionDePosicionTEST, toroideDe1x1SiempreMuere){
+    toroide t = {{true}};
+    EXPECT_FALSE(evolucionDePosicion(t, make_tuple(0,0)));
+}
+
+TEST(evolucionDePosicionTEST, toroide2x2RepiteVecinos){
+    toroide t = {{false, true}, {false, true}};
+    EXPECT_TRUE(evolucionDePosicion(t, make_tuple(0,1)));
+}
+

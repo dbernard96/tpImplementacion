@@ -192,16 +192,16 @@ int areaMinima(toroide t){
 	posicion p1 = make_tuple(0,0);
 	posicion p2 = make_tuple(t.size()-1, t[0].size()-1);
 
-	while(filaMuerta(t,get<0>(p2))){
+	while(filaMuerta(t,get<0>(p2)) && get<0>(p2) > get<0>(p1)){
 		get<0>(p2)--;
 	}
-	while(colMuerta(t,get<1>(p2))){
+	while(colMuerta(t,get<1>(p2)) && get<1>(p2) > get<1>(p1)){
 		get<1>(p2)--;
 	}
-	while(filaMuerta(t,get<0>(p1))){
+	while(filaMuerta(t,get<0>(p1)) && get<0>(p2) > get<0>(p1)){
 		get<0>(p1)++;
 	}
-	while(colMuerta(t,get<1>(p1))){
+	while(colMuerta(t,get<1>(p1)) && get<1>(p2) > get<1>(p1)){
 		get<1>(p1)++;
 	}
     return calculoArea({p1,p2});

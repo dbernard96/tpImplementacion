@@ -26,3 +26,24 @@ TEST(densidadPoblacionTEST, TodoVivo){
 	{true, true, true}};
     EXPECT_NEAR(densidadPoblacion(t), 1.0, 0.01);
 }
+
+TEST(densidadPoblacionTEST, VivosMuertosIntercalados){
+    vector<bool> filaMuertoVivo = {false, true, false, true, false, true};
+    vector<bool> filaVivoMuerto = {true, false, true, false, true, false};
+    toroide t = { filaMuertoVivo, filaVivoMuerto, filaMuertoVivo,
+                  filaVivoMuerto, filaMuertoVivo, filaVivoMuerto,
+                  filaMuertoVivo, filaVivoMuerto, filaMuertoVivo};
+    EXPECT_NEAR(densidadPoblacion(t), 0.5, 0.01);
+}
+
+TEST(densidadPoblacionTEST, Identidad3x3SobreIdentidad3x3){
+    toroide t = {
+            {true, false, false},
+            {false, true, false},
+            {false, false, true},
+            {true, false, false},
+            {false, true, false},
+            {false, false, true}};
+    EXPECT_NEAR(densidadPoblacion(t), 0.333, 0.01);
+}
+

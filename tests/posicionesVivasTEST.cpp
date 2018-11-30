@@ -3,6 +3,7 @@
 #include <algorithm>
 
 using namespace std;
+
 vector<posicion> ordenar(vector<posicion> &v) {
     sort(v.begin(), v.end());
     return v;
@@ -60,6 +61,15 @@ TEST(posicionesVivasTEST, unaFila){
 	{true, false, true}};
    
     vector<posicion> vivas = {mt(0,0), mt(0,2)};
+    vector<posicion> res = posicionesVivas(t);
+    EXPECT_EQ(ordenar(vivas), ordenar(res));
+}
+
+TEST(posicionesVivasTEST, unaFilaunaColumna){
+    toroide t = {
+            {true}};
+
+    vector<posicion> vivas = {mt(0,0)};
     vector<posicion> res = posicionesVivas(t);
     EXPECT_EQ(ordenar(vivas), ordenar(res));
 }

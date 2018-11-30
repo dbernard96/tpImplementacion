@@ -71,6 +71,21 @@ TEST(evolucionToroideTEST, toroide5EvolucionesVsEvolucion5){
     };
     toroide t2 = t;
     for (int i = 0; i < 5; ++i) evolucionToroide(t);
-    toroide evo_5 = evolucionMultiple(t2, 5); 
+    toroide evo_5 = evolucionMultiple(t2, 5);
     EXPECT_EQ(t, evo_5);
+}
+
+TEST(evolucionToroideTEST, toroideDiagonalSeHaceTodoTrue){
+    toroide t1 = {
+            {true, false, false},
+            {false, true, false},
+            {false, false, true}
+    };
+    toroide t2 = {
+            {true, true, true},
+            {true, true, true},
+            {true, true, true}};
+
+    evolucionToroide(t1);
+    EXPECT_EQ(t1, t2);
 }

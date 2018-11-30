@@ -3,13 +3,6 @@
 
 using namespace std;
 
-// void testeo (vector<bool> &s, vector<bool> &res) {
-//     ASSERT_EQ(s.size(), res.size());
-//     for (int i = 0; i < s.size(); ++i) {
-//         EXPECT_EQ(s[i], res[i]);
-//     }
-// }
-
 TEST(esValidoTEST, toroideVacio){
     toroide t = { vector<bool> () };
     EXPECT_FALSE(esValido(t));
@@ -55,3 +48,23 @@ TEST(esValidoTEST, diagonalTresPorTres) {
     };
     EXPECT_TRUE(esValido(t));
 }
+
+TEST(esValidoTEST, toroideVacio1Fila){
+    toroide t = {{}};
+    EXPECT_FALSE(esValido(t));
+}
+
+TEST(esValidoTEST, toroideTresPorTres){
+    toroide t = {
+            {true, false, false},
+            {false, false, true},
+            {false, true, false}};
+    EXPECT_TRUE(esValido(t));
+}
+
+TEST(esValidoTEST, toroideTotalmenteVacio){
+    toroide t = {  };
+    EXPECT_FALSE(esValido(t));
+}
+
+
