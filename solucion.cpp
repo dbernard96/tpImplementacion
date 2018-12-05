@@ -100,8 +100,7 @@ bool primosLejanos(toroide t1, toroide t2) {
 int seleccionNatural(vector<toroide> ts){
     int indice = -1;
     for (int i = 0; i < ts.size() && indice==-1; ++i) {
-        int c;
-        if(esPeriodico(ts[i],c) && !toroideMuerto(ts[i])){
+        if(esTPeriodico(ts[i])){
             indice = i;
         }
     }
@@ -318,4 +317,9 @@ bool colMuerta(toroide t, int i){
 
 bool mismaDimension(toroide t1,toroide t2){
     return t1.size() == t2.size() && t1[0].size() == t2[0].size();
+}
+
+bool esTPeriodico(toroide t){
+    vector<toroide> listaDeEv = listaDeEvoluciones(t);
+    return hayRepetidosEntre(listaDeEv,0,listaDeEv.size());
 }

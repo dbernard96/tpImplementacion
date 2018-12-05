@@ -3,6 +3,9 @@
  *                                                                            *
  *****************************************************************************/
 
+#ifdef WINDOWS
+#define SDL_MAIN_HANDLED
+#endif
 #include <SDL.h>
 
 #include <cmath>

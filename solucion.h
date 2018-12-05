@@ -28,6 +28,7 @@ toroide evolucionT(toroide t);
 vector<toroide> listaDeEvoluciones(toroide t);
 bool buscarSiPrimos(toroide t1,toroide t2);
 toroide trasponer(toroide t);
+bool esTPeriodico(toroide t);
 
 int areaTrasladada(toroide t);
 int areaMinima(toroide t);
