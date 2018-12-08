@@ -3,13 +3,16 @@
 #include "solucion.h"
 #include "iostream"
 using namespace std;
+
 /******************************** EJERCICIO cargarToroide *******************************/
 toroide cargarToroide(string nombreArchivo, bool &status){
 	toroide t;
 	ifstream fin;
 	fin.open(nombreArchivo);
-	if(!fin.fail()){
-		int filas;
+	if(fin.fail()) {
+        status = false;
+    }else{
+     	int filas;
 		int columnas;
 		int aux;
 		fin >> filas;
@@ -17,10 +20,13 @@ toroide cargarToroide(string nombreArchivo, bool &status){
 		vector<bool> v;
 		while(!fin.eof() && t.size() != filas){
 			fin >> aux;
+
 			if(aux == 1){
 				v.push_back(true);
-			}else{
+			}else if(aux == 0){
 				v.push_back(false);
+			}else{
+			    status = false;
 			}
 
 			if(v.size() == columnas){
@@ -28,14 +34,13 @@ toroide cargarToroide(string nombreArchivo, bool &status){
 				v = {};
 			}
 		}
+
 		fin >> aux;
-		if(posicionesVivas(t).size() == aux && esValido(t) && fin.eof()){
-			status = true;
+		if(posicionesVivas(t).size() == aux && esValido(t) && fin.eof() && t.size() == filas && t[0].size() == columnas){
+		    status = true;
 		}else{
 			status = false;
 		}
-	}else{
-		status = false;
 	}
 	fin.close();
 	return t;
@@ -63,3 +68,4 @@ bool escribirToroide(string nombreArchivo, toroide &t){
 	fout.close();
 	return !fout.fail();
 }
+
