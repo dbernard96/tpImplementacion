@@ -34,8 +34,8 @@ int areaTrasladada(toroide t);
 int areaMinima(toroide t);
 bool colMuerta(toroide t, int i);
 bool filaMuerta(toroide t, int i);
-void trasladarColumnas(toroide &t);
-void trasladarFilas(toroide &t);
+toroide trasladarColumnas(toroide t);
+toroide trasladarFilas(toroide t);
 int calculoArea(vector<posicion> p);
 bool mismaDimension(toroide t1,toroide t2);
 #endif //JUEGODELAVIDA_SOLUCION_H
