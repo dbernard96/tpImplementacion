@@ -206,13 +206,14 @@ int areaMinima(toroide t){
     return calculoArea({p1,p2});
 }
 
-void trasladarColumnas(toroide &t){
+toroide trasladarColumnas(toroide t){
     t = trasponer(t);
     trasladarFilas(t);
     t = trasponer(t);
+	return aux;
 }
 
-void trasladarFilas(toroide &t){
+toroide trasladarFilas(toroide t){
 	toroide aux;
 	aux.push_back(t[t.size()-1]);
 	int i = 0;
@@ -220,7 +221,7 @@ void trasladarFilas(toroide &t){
 		aux.push_back(t[i]);
 		i++;
 	}
-	t = aux;
+	return aux;
 }
 
 int calculoArea(vector<posicion> p){
